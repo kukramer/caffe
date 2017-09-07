@@ -3,6 +3,8 @@ set(DEPENDENCIES_NAME_1800_27 libraries_v120_x64_py27_${DEPENDENCIES_VERSION})
 set(DEPENDENCIES_NAME_1900_27 libraries_v140_x64_py27_${DEPENDENCIES_VERSION})
 set(DEPENDENCIES_NAME_1900_35 libraries_v140_x64_py35_${DEPENDENCIES_VERSION})
 
+set(DEPENDENCIES_NAME_1900_36 libraries_v140_x64_py36_${DEPENDENCIES_VERSION})
+
 set(DEPENDENCIES_URL_BASE https://github.com/willyd/caffe-builder/releases/download)
 set(DEPENDENCIES_FILE_EXT .tar.bz2)
 set(DEPENDENCIES_URL_1800_27 "${DEPENDENCIES_URL_BASE}/v${DEPENDENCIES_VERSION}/${DEPENDENCIES_NAME_1800_27}${DEPENDENCIES_FILE_EXT}")
@@ -11,6 +13,12 @@ set(DEPENDENCIES_URL_1900_27 "${DEPENDENCIES_URL_BASE}/v${DEPENDENCIES_VERSION}/
 set(DEPENDENCIES_SHA_1900_27 "17eecb095bd3b0774a87a38624a77ce35e497cd2")
 set(DEPENDENCIES_URL_1900_35 "${DEPENDENCIES_URL_BASE}/v${DEPENDENCIES_VERSION}/${DEPENDENCIES_NAME_1900_35}${DEPENDENCIES_FILE_EXT}")
 set(DEPENDENCIES_SHA_1900_35 "f060403fd1a7448d866d27c0e5b7dced39c0a607")
+
+set(DEPENDENCIES_URL_1900_36 "${DEPENDENCIES_URL_BASE}/v${DEPENDENCIES_VERSION}/${DEPENDENCIES_NAME_1900_36}${DEPENDENCIES_FILE_EXT}")
+set(DEPENDENCIES_SHA_1900_36 "0eec6de9bf0e6404b5305aa818d8d92fd4fc053a")
+
+
+#https://github.com/willyd/caffe-builder/releases/download/libraries_v140_x64_py35_1.1.0
 
 caffe_option(USE_PREBUILT_DEPENDENCIES "Download and use the prebuilt dependencies" ON IF MSVC)
 if(MSVC)
@@ -26,7 +34,8 @@ if(USE_PREBUILT_DEPENDENCIES)
     if(BUILD_python)
         if(NOT PYTHONINTERP_FOUND)
             if(NOT "${python_version}" VERSION_LESS "3.0.0")
-                find_package(PythonInterp 3.5)
+#                find_package(PythonInterp 3.5)
+                find_package(PythonInterp 3.6)
             else()
                 find_package(PythonInterp 2.7)
             endif()
@@ -62,7 +71,7 @@ if(USE_PREBUILT_DEPENDENCIES)
             set(_download_file 0)
         else()
             set(_download_file 1)
-            message(STATUS "Removing file because sha1 does not match.")
+            message(STATUS "Removing file because download sha1 ${_file_sha} does not match.")
             file(REMOVE ${_download_path})
         endif()
     endif()
@@ -78,7 +87,8 @@ if(USE_PREBUILT_DEPENDENCIES)
         endif()
     endif()
     if(EXISTS ${_download_path} AND NOT EXISTS ${CAFFE_DEPENDENCIES_DIR}/libraries)
-        message(STATUS "Extracting dependencies")
+        message(STATUS "Extracting dependencies   ********************************************")
+        message(STATUS "zz{CAFFE_DEPENDENCIES_DIR}/libraries ${CAFFE_DEPENDENCIES_DIR}/libraries")
         execute_process(COMMAND ${CMAKE_COMMAND} -E tar xjf ${_download_path}
                         WORKING_DIRECTORY ${CAFFE_DEPENDENCIES_DIR}
         )

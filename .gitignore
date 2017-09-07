@@ -1,5 +1,7 @@
 ## General
 
+*.bak
+
 # Compiled Object files
 *.slo
 *.lo

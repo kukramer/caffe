@@ -78,6 +78,10 @@ void InnerProductLayer<Dtype>::Reshape(const vector<Blob<Dtype>*>& bottom,
     bias_multiplier_.Reshape(bias_shape);
     caffe_set(M_, Dtype(1), bias_multiplier_.mutable_cpu_data());
   }
+
+  // KAK 2017-09-06
+  inputShape  = bottom[0]->shape();
+  outputShape = top_shape;
 }
 
 template <typename Dtype>

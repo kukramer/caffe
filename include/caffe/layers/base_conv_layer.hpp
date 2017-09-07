@@ -78,6 +78,34 @@ class BaseConvolutionLayer : public Layer<Dtype> {
   vector<int> output_shape_;
   const vector<int>* bottom_shape_;
 
+  /** KAK  did not want to trust that 'bottom_shape_' would always be pointing to valid memory so made separate copy in 'inputShape_' */
+  vector<int>  inputShape_;
+  vector<int>  outputShapeForPyCaffe;
+
+
+  /// KAK Methods meant to be exposed to Python
+
+  ConvolutionParameter getLayerParam() const
+  { 
+      auto zed = this->layer_param().convolution_param(); 
+      return zed;
+  }
+
+  virtual inline int         BottomDim    () const { return bottom_dim_; }
+  virtual inline int         Channels     () const { return channels_; }
+  virtual inline int         ChannelAxis  () const { return channel_axis_; }
+  virtual inline int         Group        () const { return group_;}
+  virtual inline vector<int> InputShape   () const { return inputShape_; }
+  virtual inline int         KernelHeight () const;
+  virtual inline int         KernelWidth  () const;
+  virtual inline vector<int> OutputShape  () const { return outputShapeForPyCaffe;  };
+  virtual inline int         PadHeight    () const;
+  virtual inline int         PadWidth     () const;
+  virtual inline int         StrideHeight () const;
+  virtual inline int         StrideWidth  () const;
+  virtual inline int         TopDim       () const {return top_dim_;}
+
+
   int num_spatial_axes_;
   int bottom_dim_;
   int top_dim_;

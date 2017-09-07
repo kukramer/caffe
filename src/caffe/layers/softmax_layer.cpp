@@ -86,6 +86,18 @@ void SoftmaxLayer<Dtype>::Backward_cpu(const vector<Blob<Dtype>*>& top,
 }
 
 
+// KAK 2017-09-05
+// @todo Properly implement this method or remove.
+template <typename Dtype>
+inline vector<int>  SoftmaxLayer<Dtype>::InputShape() const
+{
+    auto param = layer_param_.softmax_param();
+    vector<int>  result;
+    return result;
+}
+
+
+
 #ifdef CPU_ONLY
 STUB_GPU(SoftmaxLayer);
 #endif

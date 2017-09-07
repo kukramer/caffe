@@ -34,6 +34,35 @@ class PoolingLayer : public Layer<Dtype> {
             PoolingParameter_PoolMethod_MAX) ? 2 : 1;
   }
 
+  /** KAK Methods meant to be exposed to Python */
+  virtual const char* PoolingType() const {
+      const char* type = "";
+      switch (this->layer_param_.pooling_param().pool())
+      {
+      case PoolingParameter_PoolMethod_MAX:        type = "MAX";  
+                                                   break;
+
+      case PoolingParameter_PoolMethod_AVE:        type = "AVE";
+                                                   break;
+
+      case PoolingParameter_PoolMethod_STOCHASTIC: type = "STOCHASTIC";
+                                                   break;
+      }
+      return type;
+  }
+
+  /** KAK  methods to support ELL implementation, */
+  virtual inline int          Channels_    () const { return channels_; }
+  virtual inline vector<int>  InputShape   () const { return inputShape; }
+  virtual inline int          KernelHeight () const { return kernel_h_; }
+  virtual inline int          KernelWidth  () const { return kernel_w_; }
+  virtual inline vector<int>  OutputShape  () const { return outputShape; }
+  virtual inline int          PadHeight    () const { return pad_h_; }
+  virtual inline int          PadWidth     () const { return pad_w_; }
+  virtual inline int          StrideHeight () const { return stride_h_; }
+  virtual inline int          StrideWidth  () const { return stride_w_; }
+
+
  protected:
   virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
       const vector<Blob<Dtype>*>& top);
@@ -53,6 +82,10 @@ class PoolingLayer : public Layer<Dtype> {
   bool global_pooling_;
   Blob<Dtype> rand_idx_;
   Blob<int> max_idx_;
+
+  // KAK Added two following variables to track input and output shape.
+  vector<int>  inputShape;
+  vector<int>  outputShape;
 };
 
 }  // namespace caffe

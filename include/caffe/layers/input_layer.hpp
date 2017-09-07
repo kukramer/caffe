@@ -30,6 +30,11 @@ class InputLayer : public Layer<Dtype> {
   virtual inline int ExactNumBottomBlobs() const { return 0; }
   virtual inline int MinTopBlobs() const { return 1; }
 
+  /** KAK  Methods added to support ELL */
+  virtual inline vector<int> OutputShape() const;
+
+
+
  protected:
   virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
       const vector<Blob<Dtype>*>& top) {}

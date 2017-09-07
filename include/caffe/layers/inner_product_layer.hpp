@@ -29,6 +29,10 @@ class InnerProductLayer : public Layer<Dtype> {
   virtual inline int ExactNumBottomBlobs() const { return 1; }
   virtual inline int ExactNumTopBlobs() const { return 1; }
 
+  /** KAK  methods to support ELL implementation, */
+  virtual inline vector<int>  InputShape   () const { return inputShape; }
+  virtual inline vector<int>  OutputShape  () const { return outputShape; }
+
  protected:
   virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
       const vector<Blob<Dtype>*>& top);
@@ -45,6 +49,10 @@ class InnerProductLayer : public Layer<Dtype> {
   bool bias_term_;
   Blob<Dtype> bias_multiplier_;
   bool transpose_;  ///< if true, assume transposed weights
+
+  // KAK Added two following variables to track input and output shape.
+  vector<int>  inputShape;
+  vector<int>  outputShape;
 };
 
 }  // namespace caffe

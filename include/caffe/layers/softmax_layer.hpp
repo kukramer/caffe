@@ -26,6 +26,14 @@ class SoftmaxLayer : public Layer<Dtype> {
   virtual inline int ExactNumBottomBlobs() const { return 1; }
   virtual inline int ExactNumTopBlobs() const { return 1; }
 
+
+  /**  KAK
+   * Implemented functions for returning back layer parameters.
+   * Each Layer will be required to implement the mnethods that apply to them.
+   */
+  virtual inline vector<int> InputShape() const;
+
+
  protected:
   virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
       const vector<Blob<Dtype>*>& top);

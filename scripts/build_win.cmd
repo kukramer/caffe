@@ -24,9 +24,9 @@ if DEFINED APPVEYOR (
     if !PYTHON_VERSION! EQU 2 (
         set CONDA_ROOT=C:\Miniconda-x64
     )
-    :: Set python 3.5 with conda as the default python
+    :: Set python 3.6 with conda as the default python
     if !PYTHON_VERSION! EQU 3 (
-        set CONDA_ROOT=C:\Miniconda35-x64
+        set CONDA_ROOT=C:\Miniconda36-x64
     )
     set PATH=!CONDA_ROOT!;!CONDA_ROOT!\Scripts;!CONDA_ROOT!\Library\bin;!PATH!
 
@@ -83,8 +83,8 @@ if DEFINED APPVEYOR (
     if NOT DEFINED USE_NCCL set USE_NCCL=0
     :: Change to 1 to build a caffe.dll
     if NOT DEFINED CMAKE_BUILD_SHARED_LIBS set CMAKE_BUILD_SHARED_LIBS=0
-    :: Change to 3 if using python 3.5 (only 2.7 and 3.5 are supported)
-    if NOT DEFINED PYTHON_VERSION set PYTHON_VERSION=2
+    :: Change to 3 if using python 3.5 (only 2.7 and 3.6 are supported)
+    if NOT DEFINED PYTHON_VERSION set PYTHON_VERSION=3
     :: Change these options for your needs.
     if NOT DEFINED BUILD_PYTHON set BUILD_PYTHON=1
     if NOT DEFINED BUILD_PYTHON_LAYER set BUILD_PYTHON_LAYER=1
@@ -103,6 +103,9 @@ if DEFINED APPVEYOR (
 :: Use the exclamation mark ! below to delay the
 :: expansion of CMAKE_GENERATOR
 if %WITH_NINJA% EQU 0 (
+    if "%MSVC_VERSION%"=="15" (
+        set CMAKE_GENERATOR=Visual Studio 15 2017 Win64
+    )
     if "%MSVC_VERSION%"=="14" (
         set CMAKE_GENERATOR=Visual Studio 14 2015 Win64
     )

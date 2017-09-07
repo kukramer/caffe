@@ -87,6 +87,10 @@ void PoolingLayer<Dtype>::Reshape(const vector<Blob<Dtype>*>& bottom,
     kernel_h_ = bottom[0]->height();
     kernel_w_ = bottom[0]->width();
   }
+
+  // KAK 2017-09-05
+  inputShape = { bottom[0]->num(), channels_, height_, width_};
+
   pooled_height_ = static_cast<int>(ceil(static_cast<float>(
       height_ + 2 * pad_h_ - kernel_h_) / stride_h_)) + 1;
   pooled_width_ = static_cast<int>(ceil(static_cast<float>(
@@ -120,6 +124,9 @@ void PoolingLayer<Dtype>::Reshape(const vector<Blob<Dtype>*>& bottom,
     rand_idx_.Reshape(bottom[0]->num(), channels_, pooled_height_,
       pooled_width_);
   }
+
+  // KAK  2017-09-05
+  outputShape = { bottom[0]->num(), channels_, pooled_height_, pooled_width_ };
 }
 
 // TODO(Yangqing): Is there a faster way to do pooling in the channel-first

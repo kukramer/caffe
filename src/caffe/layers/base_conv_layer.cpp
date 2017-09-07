@@ -197,6 +197,9 @@ void BaseConvolutionLayer<Dtype>::Reshape(const vector<Blob<Dtype>*>& bottom,
   }
   // Shape the tops.
   bottom_shape_ = &bottom[0]->shape();
+
+  inputShape_ = *bottom_shape_; /* KAK since 'bottom_shape_' is a pointer wanted to make a copy in variable that will persist. */
+  
   compute_output_shape();
   vector<int> top_shape(bottom[0]->shape().begin(),
       bottom[0]->shape().begin() + channel_axis_);
@@ -389,6 +392,62 @@ void BaseConvolutionLayer<Dtype>::backward_gpu_bias(Dtype* bias,
 }
 
 #endif  // !CPU_ONLY
+
+
+
+
+template <typename Dtype>
+inline int  BaseConvolutionLayer<Dtype>::KernelHeight() const 
+{
+    auto kernelShape = kernel_shape_.cpu_data();
+    if (kernelShape) return kernelShape[0]; else return 0;
+}
+
+
+
+template <typename Dtype>
+inline int  BaseConvolutionLayer<Dtype>::KernelWidth() const
+{
+    auto kernelShape = kernel_shape_.cpu_data();
+    if (kernelShape) return kernelShape[1]; else return 0;
+}
+
+
+template <typename Dtype>
+inline int  BaseConvolutionLayer<Dtype>::StrideHeight() const
+{ 
+    auto stride = stride_.cpu_data();
+    if (stride) return stride[0]; else return 1;
+}
+
+
+template <typename Dtype>
+inline int  BaseConvolutionLayer<Dtype>::StrideWidth() const
+{
+    auto stride = stride_.cpu_data();
+    if  (stride) return stride[1]; else return 1;
+}
+
+
+template <typename Dtype>
+inline int  BaseConvolutionLayer<Dtype>::PadHeight() const
+{
+    auto pad = pad_.cpu_data();
+    if (pad)  return pad[0]; else return 0;
+}
+
+
+template <typename Dtype>
+inline int  BaseConvolutionLayer<Dtype>::PadWidth() const
+{
+    auto pad = pad_.cpu_data();
+    if (pad) return pad[1]; else return 0;
+}
+
+
+
+
+
 
 INSTANTIATE_CLASS(BaseConvolutionLayer);
 

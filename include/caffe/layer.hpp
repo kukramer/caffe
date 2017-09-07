@@ -190,6 +190,28 @@ class Layer {
    */
   virtual inline const char* type() const { return ""; }
 
+
+  /**  KAK
+   * Implemented functions for returning back layer parameters.  
+   * Each Layer will be required to implement the mnethods that apply to them.
+   */
+  virtual inline int         BottomDim    () const { return -1; }
+  virtual inline int         Channels     () const { return -1; }
+  virtual inline int         ChannelAxis  () const { return -1; }
+  virtual inline int         Group        () const { return -1; }
+  virtual inline vector<int> InputShape   () const { return vector<int>(); }
+  virtual inline int         KernelHeight () const { return -1; }
+  virtual inline int         KernelWidth  () const { return -1; }
+  virtual const  char*       Name         () const { return layer_param_.has_name() ? layer_param_.name().c_str() : ""; }
+  virtual inline vector<int> OutputShape  () const { return vector<int>(); }
+  virtual inline int         PadHeight    () const { return 0; }
+  virtual inline int         PadWidth     () const { return 0; }
+  virtual inline const char* PoolingType  () const { return ""; }
+  virtual inline int         StrideHeight () const { return -1; }
+  virtual inline int         StrideWidth  () const { return -1; }
+  virtual inline int         TopDim       () const { return -1; }
+
+
   /**
    * @brief Returns the exact number of bottom blobs required by the layer,
    *        or -1 if no exact number is required.

@@ -21,6 +21,21 @@ void InputLayer<Dtype>::LayerSetUp(const vector<Blob<Dtype>*>& bottom,
   }
 }
 
+
+// KAK 2017-09-05
+template <typename Dtype>
+inline vector<int> InputLayer<Dtype>::OutputShape() const
+{
+    const InputParameter& param = this->layer_param_.input_param();
+    const int num_shape = param.shape_size();
+    auto shape = param.shape(0);
+    vector<int> result;
+    for (int i = 0; i < shape.dim_size(); ++i)
+       result.push_back (shape.dim(i));
+    return result;
+}
+
+
 INSTANTIATE_CLASS(InputLayer);
 REGISTER_LAYER_CLASS(Input);
 
